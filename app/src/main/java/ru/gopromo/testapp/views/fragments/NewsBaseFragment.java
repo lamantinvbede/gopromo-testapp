@@ -30,7 +30,7 @@ public abstract class NewsBaseFragment extends BaseFragment implements NewsView 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private void initViews() {
+    protected void initViews() {
         getRecycler().setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         getRecycler().setLayoutManager(layoutManager);

@@ -31,4 +31,11 @@ public class NewsListPresenter extends BaseNewsPresenter {
         };
     }
 
+    public void refresh() {
+        view.startRefreshing();
+        currentOffset = 0;
+        subscription.unsubscribe();
+        loadData(true);
+        view.getRecyclerView().postDelayed(() -> view.finishRefreshing(), 200);
+    }
 }

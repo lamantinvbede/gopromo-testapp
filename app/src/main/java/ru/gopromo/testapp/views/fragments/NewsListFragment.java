@@ -3,8 +3,14 @@ package ru.gopromo.testapp.views.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -15,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.gopromo.testapp.App;
+import ru.gopromo.testapp.MainActivity;
 import ru.gopromo.testapp.R;
 import ru.gopromo.testapp.presenters.NewsListPresenter;
 import ru.gopromo.testapp.presenters.Presenter;
@@ -32,6 +39,12 @@ public class NewsListFragment extends NewsBaseFragment {
     @BindView(R.id.news_list_pb)
     ProgressBar newsListPB;
 
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     NewsListAdapter newsAdapter;
     private Unbinder unbinder;
 
@@ -39,6 +52,7 @@ public class NewsListFragment extends NewsBaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.getComponent().inject(this);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -49,6 +63,33 @@ public class NewsListFragment extends NewsBaseFragment {
         newsAdapter = new NewsListAdapter(presenter);
         super.onCreateView(inflater, container, savedInstanceState);
         return view;
+    }
+
+    @Override
+    protected void initViews() {
+        super.initViews();
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.refresh());
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.news_menu, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                presenter.refresh();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -64,6 +105,16 @@ public class NewsListFragment extends NewsBaseFragment {
     @Override
     protected Presenter getPresenter() {
         return presenter;
+    }
+
+    @Override
+    public void startRefreshing() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void finishRefreshing() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

@@ -24,18 +24,22 @@ public class PaginationUtils {
     private static final String TAG = "PagingUtils";
 
     public static <T> Observable<List<T>> paging(RecyclerView recyclerView, PaginationListener<T> pagingListener) {
-        return paging(recyclerView, pagingListener, DEFAULT_LIMIT, EMPTY_LIST_ITEMS_COUNT, MAX_ATTEMPTS_TO_RETRY_LOADING);
+        return paging(recyclerView, pagingListener, DEFAULT_LIMIT, EMPTY_LIST_ITEMS_COUNT, MAX_ATTEMPTS_TO_RETRY_LOADING, false);
     }
 
-    public static <T> Observable<List<T>> paging(RecyclerView recyclerView, PaginationListener<T> pagingListener, int limit) {
-        return paging(recyclerView, pagingListener, limit, EMPTY_LIST_ITEMS_COUNT, MAX_ATTEMPTS_TO_RETRY_LOADING);
+    public static <T> Observable<List<T>> paging(RecyclerView recyclerView, PaginationListener<T> pagingListener, boolean forceRefesh) {
+        return paging(recyclerView, pagingListener, DEFAULT_LIMIT, EMPTY_LIST_ITEMS_COUNT, MAX_ATTEMPTS_TO_RETRY_LOADING, forceRefesh);
     }
 
-    public static <T> Observable<List<T>> paging(RecyclerView recyclerView, PaginationListener<T> pagingListener, int limit, int emptyListCount) {
-        return paging(recyclerView, pagingListener, limit, emptyListCount, MAX_ATTEMPTS_TO_RETRY_LOADING);
+    public static <T> Observable<List<T>> paging(RecyclerView recyclerView, PaginationListener<T> pagingListener, int limit, boolean forceRefresh) {
+        return paging(recyclerView, pagingListener, limit, EMPTY_LIST_ITEMS_COUNT, MAX_ATTEMPTS_TO_RETRY_LOADING, forceRefresh);
     }
 
-    public static <T> Observable<List<T>> paging(RecyclerView recyclerView, PaginationListener<T> pagingListener, int limit, int emptyListCount, int retryCount) {
+    public static <T> Observable<List<T>> paging(RecyclerView recyclerView, PaginationListener<T> pagingListener, int limit, int emptyListCount, boolean forceRefresh) {
+        return paging(recyclerView, pagingListener, limit, emptyListCount, MAX_ATTEMPTS_TO_RETRY_LOADING, forceRefresh);
+    }
+
+    public static <T> Observable<List<T>> paging(RecyclerView recyclerView, PaginationListener<T> pagingListener, int limit, int emptyListCount, int retryCount, boolean forceRefresh) {
         if (recyclerView == null) {
             throw new PagingException("null recyclerView");
         }
@@ -53,14 +57,14 @@ public class PaginationUtils {
         }
 
         int startNumberOfRetryAttempt = 0;
-        return getScrollObservable(recyclerView, limit, emptyListCount)
+        return getScrollObservable(recyclerView, limit, emptyListCount, forceRefresh)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .observeOn(Schedulers.io())
                 .switchMap(offset -> getPagingObservable(pagingListener, pagingListener.onNextPage(offset), startNumberOfRetryAttempt, offset, retryCount));
     }
 
-    private static Observable<Integer> getScrollObservable(RecyclerView recyclerView, int limit, int emptyListCount) {
+    private static Observable<Integer> getScrollObservable(RecyclerView recyclerView, int limit, int emptyListCount, boolean forceRefresh) {
         return Observable.create(subscriber -> {
             final RecyclerView.OnScrollListener sl = new RecyclerView.OnScrollListener() {
                 @Override
@@ -76,12 +80,11 @@ public class PaginationUtils {
             };
             recyclerView.addOnScrollListener(sl);
             subscriber.add(Subscriptions.create(() -> recyclerView.removeOnScrollListener(sl)));
-            if (recyclerView.getAdapter().getItemCount() == emptyListCount) {
+            if (recyclerView.getAdapter().getItemCount() == emptyListCount ||
+                    !isEnoughContentToScroll(recyclerView)) {
                 subscriber.onNext(recyclerView.getAdapter().getItemCount());
-            } else {
-                if(!isEnoughContentToScroll(recyclerView)) {
-                    subscriber.onNext(recyclerView.getAdapter().getItemCount());
-                }
+            } else if(forceRefresh) {
+                subscriber.onNext(0);
             }
         });
     }

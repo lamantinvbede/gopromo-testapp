@@ -15,5 +15,9 @@ public interface NewsView extends BaseView {
 
     void showEmptyList();
 
+    void startRefreshing();
+
+    void finishRefreshing();
+
     RecyclerView getRecyclerView();
 }

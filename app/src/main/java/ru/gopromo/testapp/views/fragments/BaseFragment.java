@@ -16,6 +16,8 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroyView();
     }
 
+    protected abstract Presenter getPresenter();
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -23,6 +25,4 @@ public abstract class BaseFragment extends Fragment {
             getPresenter().onSaveInstanceState(outState);
         }
     }
-
-    protected abstract Presenter getPresenter();
 }

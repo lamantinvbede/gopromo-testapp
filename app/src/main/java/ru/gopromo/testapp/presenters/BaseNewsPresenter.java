@@ -32,7 +32,7 @@ public abstract class BaseNewsPresenter extends Presenter {
     protected List<NewsItem> newsItems;
 
     protected int currentOffset = 0;
-    private Subscription subscription;
+    protected Subscription subscription;
 
     @Override
     public void onCreateView(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public abstract class BaseNewsPresenter extends Presenter {
         }
         view.showProgress();
         if (newsItems == null || newsItems.isEmpty()) {
-            loadData();
+            loadData(false);
         } else {
             showSavedData();
         }
@@ -52,9 +52,9 @@ public abstract class BaseNewsPresenter extends Presenter {
         this.view = view;
     }
 
-    private void loadData() {
+    protected void loadData(boolean forceRefresh) {
         subscription =  PaginationUtils.paging(view.getRecyclerView(), getPagingListener(),
-                getLimit())
+                getLimit(), forceRefresh)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(newsItems -> {
                     this.newsItems = newsItems;
@@ -92,7 +92,7 @@ public abstract class BaseNewsPresenter extends Presenter {
         List<NewsItem> result =
                 new ArrayList<>(this.newsItems.subList(0, endSubList));
         view.showList(result);
-        loadData();
+        loadData(false);
         view.hideProgress();
     }
 

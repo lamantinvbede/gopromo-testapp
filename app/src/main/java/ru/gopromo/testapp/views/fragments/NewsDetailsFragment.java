@@ -81,6 +81,14 @@ public class NewsDetailsFragment extends NewsBaseFragment {
     }
 
     @Override
+    public void startRefreshing() {
+    }
+
+    @Override
+    public void finishRefreshing() {
+    }
+
+    @Override
     public RecyclerView getRecyclerView() {
         return newsListRecycler;
     }
