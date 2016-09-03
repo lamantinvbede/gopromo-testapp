@@ -12,7 +12,7 @@ public class NewsItemView implements BaseView {
     }
 
     @Override
-    public void showError() {
+    public void showError(String errorMessage) {
 
     }
 }

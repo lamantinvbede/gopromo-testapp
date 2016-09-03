@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,9 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
 
     @BindView(R.id.news_list_rv)
     RecyclerView newsListRecycler;
+
+    @BindView(R.id.news_list_pb)
+    ProgressBar newsListPB;
 
     RecyclerView.LayoutManager layoutManager;
 
@@ -66,6 +70,9 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
 
     @Override
     public void showList(List<NewsItem> list) {
+        newsListRecycler.setAlpha(0f);
+        newsListRecycler.setVisibility(View.VISIBLE);
+        newsListRecycler.animate().alpha(1f);
         newsAdapter.setValues(list);
     }
 
@@ -77,6 +84,7 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     @Override
     public void showEmptyList() {
         newsAdapter.setValues(new ArrayList<>());
+        //TODO add showing no news logic textview
     }
 
     @Override
@@ -91,16 +99,16 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
 
     @Override
     public void showProgress() {
-        //TODO
+        newsListPB.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        //TODO
+        newsListPB.setVisibility(View.GONE);
     }
 
     @Override
-    public void showError() {
+    public void showError(String errorMessage) {
         //TODO
     }
 }

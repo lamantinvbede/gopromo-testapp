@@ -12,22 +12,21 @@ import java.util.List;
 
 public class NewsItem implements Item {
 
-    private String link;
-    private Date publicationDate;
-    private String title;
-    private String description;
-    private String imageLink;
-    private String author;
-    private List<? extends Enclosure> encl;
+    private final String link;
+    private final Date publicationDate;
+    private final String title;
+    private final String description;
+    private final String imageLink;
+    private final String author;
 
     public NewsItem(Item item) {
         link = item.getLink();
         publicationDate = item.getPublicationDate();
         title = item.getTitle();
         description = item.getDescription();
-        imageLink = item.getImageLink();
+        imageLink = item.getEnclosures().size() > 0 ?
+                item.getEnclosures().get(0).getLink() : null;
         author = item.getAuthor();
-        encl = item.getEnclosures();
     }
 
     @Nullable
@@ -69,34 +68,7 @@ public class NewsItem implements Item {
     @NonNull
     @Override
     public List<? extends Enclosure> getEnclosures() {
-        return encl;
+        return null;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public void setPublicationDate(Date publicationDate) {
-        this.publicationDate = publicationDate;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public void setEncl(List<? extends Enclosure> encl) {
-        this.encl = encl;
-    }
 }

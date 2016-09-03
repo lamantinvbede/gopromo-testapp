@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +21,11 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView title;
+        public final ImageView newsPhoto;
         public ViewHolder(View v) {
             super(v);
             title = (TextView) v.findViewById(R.id.news_title);
+            newsPhoto = (ImageView) v.findViewById(R.id.news_photo);
         }
     }
 
@@ -46,7 +51,15 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText(values.get(position).getTitle());
+        NewsItem newsItem = values.get(position);
+        holder.title.setText(newsItem.getTitle());
+        if(newsItem.getImageLink() != null) {
+            holder.newsPhoto.setVisibility(View.VISIBLE);
+            Glide.with(holder.itemView.getContext()).load(newsItem.getImageLink())
+                    .into(holder.newsPhoto);
+        } else {
+            holder.newsPhoto.setVisibility(View.GONE);
+        }
     }
 
     @Override
