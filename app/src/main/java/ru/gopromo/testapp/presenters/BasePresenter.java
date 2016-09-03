@@ -19,5 +19,7 @@ public abstract class BasePresenter {
 
     public abstract void onStop();
 
+    public abstract void onDestroyView();
+
     public abstract void onSaveInstanceState(Bundle savedInstanceState);
 }

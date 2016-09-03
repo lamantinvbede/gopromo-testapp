@@ -8,6 +8,11 @@ public class NewsDetailsPresenter extends BasePresenter {
     }
 
     @Override
+    public void onDestroyView() {
+
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
     }

@@ -19,6 +19,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        if(getPresenter() != null) {
+            getPresenter().onDestroyView();
+        }
+        super.onDestroyView();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if(getPresenter() != null) {
