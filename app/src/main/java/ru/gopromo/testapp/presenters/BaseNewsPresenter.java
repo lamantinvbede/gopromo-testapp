@@ -100,10 +100,6 @@ public abstract class BaseNewsPresenter extends Presenter {
     }
 
     @Override
-    public void onStop() {
-    }
-
-    @Override
     public void onDestroyView() {
         if(subscription != null)
             subscription.unsubscribe();
