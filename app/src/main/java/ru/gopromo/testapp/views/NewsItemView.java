@@ -1,4 +1,4 @@
 package ru.gopromo.testapp.views;
 
-public class NewsItemView {
+public class NewsItemView implements BaseView {
 }

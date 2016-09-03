@@ -20,6 +20,16 @@ public class NewsItem implements Item {
     private String author;
     private List<? extends Enclosure> encl;
 
+    public NewsItem(Item item) {
+        link = item.getLink();
+        publicationDate = item.getPublicationDate();
+        title = item.getTitle();
+        description = item.getDescription();
+        imageLink = item.getImageLink();
+        author = item.getAuthor();
+        encl = item.getEnclosures();
+    }
+
     @Nullable
     @Override
     public String getLink() {

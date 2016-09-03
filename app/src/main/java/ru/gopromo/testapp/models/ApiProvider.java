@@ -25,8 +25,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import ru.gopromo.testapp.BuildConfig;
 
-public class ApiModule {
-    private static final String TAG = "API_MODULE";
+public class ApiProvider {
 
     public static Api getApi(String baseUrl) {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
