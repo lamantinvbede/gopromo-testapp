@@ -12,6 +12,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.DataFormatException;
 
@@ -20,6 +21,13 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import ru.gopromo.testapp.models.ApiModule;
+import ru.gopromo.testapp.other.Constants;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,37 +37,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
 
-        clientBuilder.connectTimeout(20, TimeUnit.SECONDS);
-        clientBuilder.readTimeout(20, TimeUnit.SECONDS);
-        OkHttpClient client = clientBuilder.build();
-
-        Request request = new Request.Builder()
-                .url("https://lenta.ru/rss/news")
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                InputStream is = response.body().byteStream();
-                try {
-                    Feed feed = EarlParser.parseOrThrow(is, 0);
-                    Log.i(TAG, "Processing feed: " + feed.getTitle());
-                    for (Item item : feed.getItems()) {
-                        String title = item.getTitle();
-                        Log.i(TAG, "Item title: " + (title == null ? "N/A" : title));
-                    }
-                } catch (XmlPullParserException | DataFormatException e) {
-                    e.printStackTrace();
+        ApiModule.getApi(Constants.BASE_URL).getNews()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .onErrorResumeNext(throwable -> {
+                throwable.printStackTrace();
+                return Observable.empty();
+            })
+            .subscribe(items -> {
+                for(Item item : items) {
+                    Log.d(TAG, "item " + item.getTitle());
                 }
-            }
-        });
+            });
 
     }
 }

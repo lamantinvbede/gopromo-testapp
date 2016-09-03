@@ -1,10 +1,14 @@
 package ru.gopromo.testapp.models;
 
 
+import com.einmalfel.earl.Item;
+
 import java.util.List;
 
+import retrofit2.http.GET;
 import rx.Observable;
 
 public interface Api {
-    Observable<List<NewsItem>> getNews();
+    @GET("/rss/news")
+    Observable<List<Item>> getNews();
 }
