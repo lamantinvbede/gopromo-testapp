@@ -18,8 +18,6 @@ import ru.gopromo.testapp.other.utils.DateUtils;
 public class NewsItem implements Serializable {
 
     @Nullable
-    private final String link;
-    @Nullable
     private final String publicationDate;
     @Nullable
     private final String title;
@@ -31,18 +29,13 @@ public class NewsItem implements Serializable {
     private final String category;
 
     public NewsItem(RSSItem item) {
-        link = item.getLink();
+
         publicationDate = DateUtils.getSimpleDateString(item.getPublicationDate());
         title = item.getTitle();
         description = item.getDescription();
         imageLink = item.getEnclosures().size() > 0 ?
                 item.getEnclosures().get(0).getLink() : null;
-        category = item.categories.isEmpty() ? "" : item.categories.get(0).value;
-    }
-
-    @Nullable
-    public String getLink() {
-        return link;
+        category = item.categories.isEmpty() ? "" : "#" + item.categories.get(0).value;
     }
 
     @Nullable

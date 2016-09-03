@@ -16,6 +16,7 @@
     </style>
 
     <style name="NewsItemTextCategory">
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">18sp</item>
     </style>
 

@@ -6,9 +6,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import ru.gopromo.testapp.App;
 import ru.gopromo.testapp.models.NewsItem;
 import ru.gopromo.testapp.models.SessionData;
 import ru.gopromo.testapp.other.utils.PaginationUtils;
@@ -26,10 +23,10 @@ public class NewsListPresenter extends BasePresenter {
     private static final String OFFSET = "offset";
 
     List<NewsItem> newsItems;
-    private NewsListView view;
     private int currentOffset = 0;
     private Subscription subscription;
 
+    private NewsListView view;
     private SessionData sessionData;
 
     public void setModel(SessionData sessionData) {
@@ -75,7 +72,6 @@ public class NewsListPresenter extends BasePresenter {
                     if(endSubList - currentOffset > LIMIT) {
                         endSubList = currentOffset + LIMIT;
                     }
-
                     List<NewsItem> result =
                             new ArrayList<>(this.newsItems.subList(currentOffset, endSubList));
                     if(currentOffset == 0) {
