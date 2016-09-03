@@ -21,11 +21,15 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView title;
+        public final TextView date;
+        public final TextView category;
         public final ImageView newsPhoto;
         public ViewHolder(View v) {
             super(v);
             title = (TextView) v.findViewById(R.id.news_title);
             newsPhoto = (ImageView) v.findViewById(R.id.news_photo);
+            category = (TextView) v.findViewById(R.id.news_category);
+            date = (TextView) v.findViewById(R.id.news_date);
         }
     }
 
@@ -52,7 +56,25 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         NewsItem newsItem = values.get(position);
+        setTitle(holder, newsItem);
+        setPhoto(holder, newsItem);
+        setCategory(holder, newsItem);
+        setDate(holder, newsItem);
+    }
+
+    private void setDate(ViewHolder holder, NewsItem newsItem) {
+        holder.date.setText(newsItem.getPublicationDate());
+    }
+
+    private void setCategory(ViewHolder holder, NewsItem newsItem) {
+        holder.category.setText(newsItem.getCategoryTitle());
+    }
+
+    private void setTitle(ViewHolder holder, NewsItem newsItem) {
         holder.title.setText(newsItem.getTitle());
+    }
+
+    private void setPhoto(ViewHolder holder, NewsItem newsItem) {
         if(newsItem.getImageLink() != null) {
             holder.newsPhoto.setVisibility(View.VISIBLE);
             Glide.with(holder.itemView.getContext()).load(newsItem.getImageLink())

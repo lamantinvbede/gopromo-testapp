@@ -6,69 +6,66 @@ import android.support.annotation.Nullable;
 
 import com.einmalfel.earl.Enclosure;
 import com.einmalfel.earl.Item;
+import com.einmalfel.earl.RSSCategory;
+import com.einmalfel.earl.RSSItem;
 
 import java.util.Date;
 import java.util.List;
 
-public class NewsItem implements Item {
+import ru.gopromo.testapp.other.utils.DateUtils;
 
+public class NewsItem  {
+
+    @Nullable
     private final String link;
-    private final Date publicationDate;
+    @Nullable
+    private final String publicationDate;
+    @Nullable
     private final String title;
+    @Nullable
     private final String description;
+    @Nullable
     private final String imageLink;
-    private final String author;
+    @NonNull
+    private final String category;
 
-    public NewsItem(Item item) {
+    public NewsItem(RSSItem item) {
         link = item.getLink();
-        publicationDate = item.getPublicationDate();
+        publicationDate = DateUtils.getSimpleDateString(item.getPublicationDate());
         title = item.getTitle();
         description = item.getDescription();
         imageLink = item.getEnclosures().size() > 0 ?
                 item.getEnclosures().get(0).getLink() : null;
-        author = item.getAuthor();
+        category = item.categories.isEmpty() ? "" : item.categories.get(0).value;
     }
 
     @Nullable
-    @Override
     public String getLink() {
         return link;
     }
 
     @Nullable
-    @Override
-    public Date getPublicationDate() {
+    public String getPublicationDate() {
         return publicationDate;
     }
 
     @Nullable
-    @Override
     public String getTitle() {
         return title;
     }
 
     @Nullable
-    @Override
     public String getDescription() {
         return description;
     }
 
     @Nullable
-    @Override
     public String getImageLink() {
         return imageLink;
     }
 
-    @Nullable
-    @Override
-    public String getAuthor() {
-        return author;
-    }
-
     @NonNull
-    @Override
-    public List<? extends Enclosure> getEnclosures() {
-        return null;
+    public String getCategoryTitle() {
+        return category;
     }
-
 }

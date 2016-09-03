@@ -1,7 +1,7 @@
 package ru.gopromo.testapp.models;
 
 
-import com.einmalfel.earl.Item;
+import com.einmalfel.earl.RSSItem;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import rx.Observable;
 
 public interface Api {
     @GET("/rss/news")
-    Observable<List<Item>> getNews();
+    Observable<List<RSSItem>> getNews();
 }
