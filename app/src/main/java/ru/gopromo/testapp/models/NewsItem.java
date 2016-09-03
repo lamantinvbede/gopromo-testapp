@@ -32,7 +32,7 @@ public class NewsItem implements Serializable {
 
         publicationDate = DateUtils.getSimpleDateString(item.getPublicationDate());
         title = item.getTitle();
-        description = item.getDescription();
+        description = item.getDescription() == null ? null : item.getDescription().trim();
         imageLink = item.getEnclosures().size() > 0 ?
                 item.getEnclosures().get(0).getLink() : null;
         category = item.categories.isEmpty() ? "" : "#" + item.categories.get(0).value;
