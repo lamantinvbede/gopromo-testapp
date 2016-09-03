@@ -1,11 +1,15 @@
 package ru.gopromo.testapp.views;
 
+import android.support.v7.widget.RecyclerView;
+
 import java.util.List;
 
 import ru.gopromo.testapp.models.NewsItem;
 
-public class NewsListView implements BaseView {
-    public void show(List<NewsItem> newsItems) {
-        //TODO
-    }
+public interface NewsListView extends BaseView {
+    void showList(List<NewsItem> list);
+    void addList(List<NewsItem> list);
+    void showEmptyList();
+    void showDetailsView(NewsItem item);
+    RecyclerView getRecyclerView();
 }

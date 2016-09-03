@@ -25,16 +25,20 @@ public class NewsListPresenter extends BasePresenter {
         if (newsItems == null) {
             loadData();
         } else {
-            this.view.show(newsItems);
+            this.view.showList(newsItems);
         }
 
     }
 
     private void loadData() {
+        view.showProgress();
         sessionData.getNews().subscribe(newsItems -> {
-            for(Item item : newsItems) {
-                Log.d(TAG, "item " + item.getTitle());
+            if(newsItems.size() > 0) {
+                view.showList(newsItems);
+            } else {
+                view.showEmptyList();
             }
+            view.hideProgress();
         });
     }
 

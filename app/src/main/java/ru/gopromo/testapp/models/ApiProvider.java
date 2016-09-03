@@ -1,8 +1,6 @@
 package ru.gopromo.testapp.models;
 
 
-import android.util.Log;
-
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
@@ -17,7 +15,6 @@ import java.util.List;
 import java.util.zip.DataFormatException;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;

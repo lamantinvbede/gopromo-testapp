@@ -1,4 +1,4 @@
-package ru.gopromo.testapp.other.fragments;
+package ru.gopromo.testapp.views.fragments;
 
 
 import android.os.Bundle;
