@@ -21,6 +21,7 @@ import butterknife.Unbinder;
 import ru.gopromo.testapp.App;
 import ru.gopromo.testapp.R;
 import ru.gopromo.testapp.models.NewsItem;
+import ru.gopromo.testapp.models.SessionData;
 import ru.gopromo.testapp.other.utils.NavigationController;
 import ru.gopromo.testapp.presenters.BasePresenter;
 import ru.gopromo.testapp.presenters.NewsListPresenter;
@@ -40,13 +41,17 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
 
     RecyclerView.LayoutManager layoutManager;
 
-    NewsListAdapter newsAdapter = new NewsListAdapter();
+    NewsListAdapter newsAdapter;
     private Unbinder unbinder;
+
+    @Inject
+    SessionData sessionData;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.getComponent().inject(this);
+        presenter.setModel(sessionData);
     }
 
     @Nullable
@@ -54,8 +59,10 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_list, container, false);
         unbinder = ButterKnife.bind(this, view);
+        newsAdapter = new NewsListAdapter(presenter);
         initViews();
-        presenter.onCreateView(savedInstanceState, this);
+        presenter.setView(this);
+        presenter.onCreateView(savedInstanceState);
         return view;
     }
 
@@ -88,11 +95,6 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     public void showEmptyList() {
         newsAdapter.setValues(new ArrayList<>());
         //TODO add showing no news logic textview
-    }
-
-    @Override
-    public void showDetailsView(NewsItem item) {
-        //TODO
     }
 
     @Override

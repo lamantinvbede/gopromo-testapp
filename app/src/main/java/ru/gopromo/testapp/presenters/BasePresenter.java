@@ -10,13 +10,6 @@ import ru.gopromo.testapp.models.SessionData;
 
 public abstract class BasePresenter {
 
-    @Inject
-    protected SessionData sessionData;
-
-    public BasePresenter() {
-        App.getComponent().inject(this);
-    }
-
     public abstract void onStop();
 
     public abstract void onDestroyView();

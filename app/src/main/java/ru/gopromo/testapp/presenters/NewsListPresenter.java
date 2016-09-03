@@ -6,7 +6,11 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import ru.gopromo.testapp.App;
 import ru.gopromo.testapp.models.NewsItem;
+import ru.gopromo.testapp.models.SessionData;
 import ru.gopromo.testapp.other.utils.PaginationUtils;
 import ru.gopromo.testapp.views.NewsListView;
 import ru.gopromo.testapp.views.fragments.NewsDetailsFragment;
@@ -26,8 +30,17 @@ public class NewsListPresenter extends BasePresenter {
     private int currentOffset = 0;
     private Subscription subscription;
 
-    public void onCreateView(Bundle savedInstanceState, NewsListView view) {
+    private SessionData sessionData;
+
+    public void setModel(SessionData sessionData) {
+        this.sessionData = sessionData;
+    }
+
+    public void setView(NewsListView view) {
         this.view = view;
+    }
+
+    public void onCreateView(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             loadSavedData(savedInstanceState);
         }

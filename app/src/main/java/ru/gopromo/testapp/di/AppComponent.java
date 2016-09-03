@@ -5,6 +5,8 @@ import javax.inject.Singleton;
 import dagger.Component;
 import ru.gopromo.testapp.models.SessionDataImpl;
 import ru.gopromo.testapp.presenters.BasePresenter;
+import ru.gopromo.testapp.presenters.NewsDetailsPresenter;
+import ru.gopromo.testapp.presenters.NewsListPresenter;
 import ru.gopromo.testapp.views.adapters.NewsListAdapter;
 import ru.gopromo.testapp.views.fragments.NewsDetailsFragment;
 import ru.gopromo.testapp.views.fragments.NewsListFragment;
@@ -15,11 +17,9 @@ public interface AppComponent {
 
     void inject(SessionDataImpl sessionData);
 
-    void inject(BasePresenter basePresenter);
-
     void inject(NewsListFragment newsListFragment);
 
-    void inject(NewsDetailsFragment newsDetailsFragment);
-
     void inject(NewsListAdapter newsListAdapter);
+
+    void inject(NewsDetailsFragment newsDetailsFragment);
 }

@@ -24,11 +24,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
     private List<NewsItem> values = new ArrayList<>();
 
-    @Inject
     NewsListPresenter presenter;
 
-    public NewsListAdapter() {
-        App.getComponent().inject(this);
+    public NewsListAdapter(NewsListPresenter presenter) {
+        this.presenter = presenter;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="NewsItemTextTitle">
@@ -18,5 +21,18 @@
 
     <style name="NewsItemTextDate">
         <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="NewsDetailsDescription">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="NewsDetailsDate">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="NewsDetailsTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:color">@android:color/black</item>
     </style>
 </resources>
