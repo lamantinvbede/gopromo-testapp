@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import ru.gopromo.testapp.App;
 import ru.gopromo.testapp.R;
 import ru.gopromo.testapp.models.NewsItem;
@@ -39,6 +40,7 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     RecyclerView.LayoutManager layoutManager;
 
     NewsListAdapter newsAdapter = new NewsListAdapter();
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +52,8 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_list, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
+
         initViews();
         presenter.onCreateView(savedInstanceState, this);
         return view;
@@ -110,5 +113,11 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     @Override
     public void showError(String errorMessage) {
         //TODO
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
     }
 }

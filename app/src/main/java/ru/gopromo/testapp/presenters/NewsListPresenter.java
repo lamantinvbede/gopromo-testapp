@@ -11,11 +11,14 @@ import ru.gopromo.testapp.other.utils.PaginationUtils;
 import ru.gopromo.testapp.views.NewsListView;
 import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class NewsListPresenter extends BasePresenter {
 
     private static final String TAG = "NewsListPresenter";
     public static final int LIMIT = 10;
+    private static final String NEWS_ITEMS = "news_items";
+    private static final String OFFSET = "offset";
 
     List<NewsItem> newsItems;
     private NewsListView view;
@@ -23,20 +26,20 @@ public class NewsListPresenter extends BasePresenter {
     private Subscription subscription;
 
     public void onCreateView(Bundle savedInstanceState, NewsListView view) {
-        if (savedInstanceState != null) {
-            //TODO read from bundle
-        }
         this.view = view;
-        if (newsItems == null) {
+        if (savedInstanceState != null) {
+            loadSavedData(savedInstanceState);
+        }
+        view.showProgress();
+        if (newsItems == null || newsItems.isEmpty()) {
             loadData();
         } else {
-            this.view.showList(newsItems);
+            showSavedData();
         }
 
     }
 
     private void loadData() {
-        view.showProgress();
         subscription = PaginationUtils.paging(view.getRecyclerView(),
                 offset -> {
                     currentOffset = offset;
@@ -47,10 +50,12 @@ public class NewsListPresenter extends BasePresenter {
                         return Observable.just(this.newsItems);
                     }
                 }, LIMIT)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(newsItems -> {
                     this.newsItems = newsItems;
                     if(this.newsItems.isEmpty()) {
                         view.showEmptyList();
+                        view.hideProgress();
                         return;
                     }
                     int endSubList = newsItems.size();
@@ -69,9 +74,28 @@ public class NewsListPresenter extends BasePresenter {
         });
     }
 
+    private void loadSavedData(Bundle savedInstanceState) {
+        if(savedInstanceState.containsKey(NEWS_ITEMS))
+            newsItems = (List<NewsItem>) savedInstanceState.getSerializable(NEWS_ITEMS);
+        currentOffset = savedInstanceState.getInt(OFFSET, 0);
+    }
+
+    private void showSavedData() {
+        int endSubList = newsItems.size();
+        if(endSubList - currentOffset > LIMIT) {
+            endSubList = currentOffset + LIMIT;
+        }
+        List<NewsItem> result =
+                new ArrayList<>(this.newsItems.subList(0, endSubList));
+        view.showList(result);
+        loadData();
+        view.hideProgress();
+    }
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        //TODO save instance
+        savedInstanceState.putSerializable(NEWS_ITEMS, (ArrayList<NewsItem>)newsItems);
+        savedInstanceState.putInt(OFFSET, currentOffset);
     }
 
     @Override

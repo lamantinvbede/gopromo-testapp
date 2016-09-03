@@ -9,12 +9,13 @@ import com.einmalfel.earl.Item;
 import com.einmalfel.earl.RSSCategory;
 import com.einmalfel.earl.RSSItem;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import ru.gopromo.testapp.other.utils.DateUtils;
 
-public class NewsItem  {
+public class NewsItem implements Serializable {
 
     @Nullable
     private final String link;
