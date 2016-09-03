@@ -13,23 +13,39 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import ru.gopromo.testapp.App;
 import ru.gopromo.testapp.R;
 import ru.gopromo.testapp.models.NewsItem;
+import ru.gopromo.testapp.presenters.NewsListPresenter;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
+
     private List<NewsItem> values = new ArrayList<>();
 
+    @Inject
+    NewsListPresenter presenter;
+
+    public NewsListAdapter() {
+        App.getComponent().inject(this);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         public final TextView title;
         public final TextView date;
         public final TextView category;
         public final ImageView newsPhoto;
+        public final View newsCard;
+
         public ViewHolder(View v) {
             super(v);
             title = (TextView) v.findViewById(R.id.news_title);
             newsPhoto = (ImageView) v.findViewById(R.id.news_photo);
             category = (TextView) v.findViewById(R.id.news_category);
             date = (TextView) v.findViewById(R.id.news_date);
+            newsCard = v.findViewById(R.id.news_card);
         }
     }
 
@@ -55,11 +71,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        NewsItem newsItem = values.get(position);
+        final NewsItem newsItem = values.get(position);
         setTitle(holder, newsItem);
         setPhoto(holder, newsItem);
         setCategory(holder, newsItem);
         setDate(holder, newsItem);
+        holder.newsCard.setOnClickListener(view -> {
+            presenter.onNewsItemClick(newsItem);
+        });
     }
 
     private void setDate(ViewHolder holder, NewsItem newsItem) {

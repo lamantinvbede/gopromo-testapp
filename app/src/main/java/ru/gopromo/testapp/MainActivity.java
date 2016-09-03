@@ -6,10 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import ru.gopromo.testapp.other.utils.NavigationController;
 import ru.gopromo.testapp.views.fragments.NewsListFragment;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationController {
 
     private static final String TAG = "MainActivity";
     private FragmentManager fragmentManager;
@@ -23,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
         if (fragment == null) replaceFragment(new NewsListFragment(), false);
     }
 
-    private void replaceFragment(Fragment fragment, boolean addBackStack) {
+    @Override
+    public void replaceFragment(Fragment fragment, boolean addBackStack) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container, fragment, TAG);
         if (addBackStack) transaction.addToBackStack(null);

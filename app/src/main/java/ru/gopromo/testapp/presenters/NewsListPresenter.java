@@ -9,6 +9,7 @@ import java.util.List;
 import ru.gopromo.testapp.models.NewsItem;
 import ru.gopromo.testapp.other.utils.PaginationUtils;
 import ru.gopromo.testapp.views.NewsListView;
+import ru.gopromo.testapp.views.fragments.NewsDetailsFragment;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -36,7 +37,6 @@ public class NewsListPresenter extends BasePresenter {
         } else {
             showSavedData();
         }
-
     }
 
     private void loadData() {
@@ -90,6 +90,10 @@ public class NewsListPresenter extends BasePresenter {
         view.showList(result);
         loadData();
         view.hideProgress();
+    }
+
+    public void onNewsItemClick(NewsItem newsItem) {
+        view.navigationController().replaceFragment(NewsDetailsFragment.create(newsItem), true);
     }
 
     @Override

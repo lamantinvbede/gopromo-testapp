@@ -21,6 +21,7 @@ import butterknife.Unbinder;
 import ru.gopromo.testapp.App;
 import ru.gopromo.testapp.R;
 import ru.gopromo.testapp.models.NewsItem;
+import ru.gopromo.testapp.other.utils.NavigationController;
 import ru.gopromo.testapp.presenters.BasePresenter;
 import ru.gopromo.testapp.presenters.NewsListPresenter;
 import ru.gopromo.testapp.views.NewsListView;
@@ -53,7 +54,6 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_list, container, false);
         unbinder = ButterKnife.bind(this, view);
-
         initViews();
         presenter.onCreateView(savedInstanceState, this);
         return view;
@@ -113,6 +113,12 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     @Override
     public void showError(String errorMessage) {
         //TODO
+    }
+
+    @Override
+    public NavigationController navigationController() {
+        return getActivity() != null && getActivity() instanceof NavigationController
+                ? (NavigationController) getActivity() : null;
     }
 
     @Override
