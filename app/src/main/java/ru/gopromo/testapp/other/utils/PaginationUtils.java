@@ -11,6 +11,8 @@ import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
@@ -66,7 +68,6 @@ public class PaginationUtils {
                     if (!subscriber.isUnsubscribed()) {
                         int position = getLastVisibleItemPosition(recyclerView);
                         int updatePosition = recyclerView.getAdapter().getItemCount() - 1 - (limit / 2);
-                        Log.d(TAG, "position : " + position + " updatePosition " + updatePosition);
                         if (position >= updatePosition) {
                             subscriber.onNext(recyclerView.getAdapter().getItemCount());
                         }
@@ -77,8 +78,27 @@ public class PaginationUtils {
             subscriber.add(Subscriptions.create(() -> recyclerView.removeOnScrollListener(sl)));
             if (recyclerView.getAdapter().getItemCount() == emptyListCount) {
                 subscriber.onNext(recyclerView.getAdapter().getItemCount());
+            } else {
+                if(!isEnoughContentToScroll(recyclerView)) {
+                    subscriber.onNext(recyclerView.getAdapter().getItemCount());
+                }
             }
         });
+    }
+
+    private static boolean isEnoughContentToScroll(RecyclerView recyclerView) {
+        //I know, that will work normally only for linearLayoutManager
+        Class recyclerViewLMClass = recyclerView.getLayoutManager().getClass();
+        if (recyclerViewLMClass == LinearLayoutManager.class
+                || LinearLayoutManager.class.isAssignableFrom(recyclerViewLMClass)) {
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+            boolean cantScrollDownwards = linearLayoutManager
+                    .findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1;
+            boolean cantScrollUpwards = linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0;
+            return !(cantScrollDownwards && cantScrollUpwards);
+        }
+
+        return true;
     }
 
     private static int getLastVisibleItemPosition(RecyclerView recyclerView) {
