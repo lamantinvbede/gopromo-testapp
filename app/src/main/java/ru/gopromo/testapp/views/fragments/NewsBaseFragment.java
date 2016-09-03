@@ -3,6 +3,7 @@ package ru.gopromo.testapp.views.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,6 +55,10 @@ public abstract class NewsBaseFragment extends BaseFragment implements NewsView 
     public void showEmptyList() {
         getAdapter().setValues(new ArrayList<>());
         //TODO add showing no news logic textview
+    }
+
+    protected AppCompatActivity getCompatActivity() {
+        return (AppCompatActivity)getActivity();
     }
 
     protected abstract RecyclerView getRecycler();

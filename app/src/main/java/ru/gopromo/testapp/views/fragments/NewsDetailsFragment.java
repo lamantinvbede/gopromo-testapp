@@ -3,7 +3,9 @@ package ru.gopromo.testapp.views.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +47,9 @@ public class NewsDetailsFragment extends NewsBaseFragment {
 
     @BindView(R.id.news_list_pb)
     ProgressBar newsListPB;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     NewsDetailsAdapter newsAdapter = new NewsDetailsAdapter();
     private Unbinder unbinder;

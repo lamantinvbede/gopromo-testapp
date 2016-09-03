@@ -69,17 +69,12 @@ public class NewsListFragment extends NewsBaseFragment {
     protected void initViews() {
         super.initViews();
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.refresh());
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        getCompatActivity().setSupportActionBar(toolbar);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.news_menu, menu);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
     }
 
     @Override
