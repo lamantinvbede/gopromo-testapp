@@ -3,7 +3,6 @@ package ru.gopromo.testapp.views.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +20,12 @@ import butterknife.Unbinder;
 import ru.gopromo.testapp.App;
 import ru.gopromo.testapp.R;
 import ru.gopromo.testapp.models.NewsItem;
-import ru.gopromo.testapp.other.utils.NavigationController;
 import ru.gopromo.testapp.presenters.NewsDetailsPresenter;
 import ru.gopromo.testapp.presenters.Presenter;
-import ru.gopromo.testapp.views.NewsView;
+import ru.gopromo.testapp.views.adapters.BaseAdapter;
 import ru.gopromo.testapp.views.adapters.NewsDetailsAdapter;
 
-public class NewsDetailsFragment extends BaseFragment implements NewsView {
+public class NewsDetailsFragment extends NewsBaseFragment {
 
     private static final String NEWS_ITEMS = "news_items";
 
@@ -48,8 +46,6 @@ public class NewsDetailsFragment extends BaseFragment implements NewsView {
     @BindView(R.id.news_list_pb)
     ProgressBar newsListPB;
 
-    RecyclerView.LayoutManager layoutManager;
-
     NewsDetailsAdapter newsAdapter = new NewsDetailsAdapter();
     private Unbinder unbinder;
 
@@ -65,41 +61,23 @@ public class NewsDetailsFragment extends BaseFragment implements NewsView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.news_details_list, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initViews();
-        presenter.setView(this);
-        presenter.onCreateView(savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }
 
-    private void initViews() {
-        newsListRecycler.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getContext());
-        newsListRecycler.setLayoutManager(layoutManager);
-        newsListRecycler.setAdapter(newsAdapter);
+    @Override
+    protected RecyclerView getRecycler() {
+        return newsListRecycler;
+    }
+
+    @Override
+    protected BaseAdapter getAdapter() {
+        return newsAdapter;
     }
 
     @Override
     protected Presenter getPresenter() {
         return presenter;
-    }
-
-    @Override
-    public void showList(List<NewsItem> list) {
-        newsListRecycler.setAlpha(0f);
-        newsListRecycler.setVisibility(View.VISIBLE);
-        newsListRecycler.animate().alpha(1f);
-        newsAdapter.setValues(list);
-    }
-
-    @Override
-    public void addList(List<NewsItem> list) {
-        newsAdapter.addValues(list);
-    }
-
-    @Override
-    public void showEmptyList() {
-        newsAdapter.setValues(new ArrayList<>());
-        //TODO add showing no news logic textview
     }
 
     @Override
@@ -120,12 +98,6 @@ public class NewsDetailsFragment extends BaseFragment implements NewsView {
     @Override
     public void showError(String errorMessage) {
         //TODO
-    }
-
-    @Override
-    public NavigationController navigationController() {
-        return getActivity() != null && getActivity() instanceof NavigationController
-                ? (NavigationController) getActivity() : null;
     }
 
     @Override

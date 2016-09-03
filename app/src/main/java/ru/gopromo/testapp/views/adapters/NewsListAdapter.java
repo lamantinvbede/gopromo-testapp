@@ -17,7 +17,7 @@ import ru.gopromo.testapp.R;
 import ru.gopromo.testapp.models.NewsItem;
 import ru.gopromo.testapp.presenters.NewsListPresenter;
 
-public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
+public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> implements BaseAdapter {
 
     private List<NewsItem> values = new ArrayList<>();
 
@@ -45,11 +45,13 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
         }
     }
 
+    @Override
     public void setValues(List<NewsItem> newsItems) {
         values = newsItems;
         notifyDataSetChanged();
     }
 
+    @Override
     public void addValues(List<NewsItem> additional) {
         int currentSize = values.size();
         values.addAll(additional);

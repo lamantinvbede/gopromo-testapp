@@ -8,8 +8,6 @@ import ru.gopromo.testapp.presenters.Presenter;
 
 public abstract class BaseFragment extends Fragment {
 
-    protected abstract Presenter getPresenter();
-
     @Override
     public void onDestroyView() {
         if(getPresenter() != null) {
@@ -25,4 +23,6 @@ public abstract class BaseFragment extends Fragment {
             getPresenter().onSaveInstanceState(outState);
         }
     }
+
+    protected abstract Presenter getPresenter();
 }

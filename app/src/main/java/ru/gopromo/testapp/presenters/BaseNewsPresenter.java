@@ -33,6 +33,8 @@ public abstract class BaseNewsPresenter extends Presenter {
 
     protected int currentOffset = 0;
     private Subscription subscription;
+
+    @Override
     public void onCreateView(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             loadSavedData(savedInstanceState);
@@ -45,6 +47,7 @@ public abstract class BaseNewsPresenter extends Presenter {
         }
     }
 
+    @Override
     public void setView(NewsView view) {
         this.view = view;
     }
