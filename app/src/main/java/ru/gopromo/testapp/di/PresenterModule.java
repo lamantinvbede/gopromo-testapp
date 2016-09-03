@@ -4,14 +4,15 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import ru.gopromo.testapp.models.SessionData;
-import ru.gopromo.testapp.models.SessionDataImpl;
+import ru.gopromo.testapp.models.NewsSessionData;
+import ru.gopromo.testapp.models.NewsSessionDataImpl;
 
 @Module
 public class PresenterModule {
     @Provides
     @Singleton
-    SessionData provideSessionData() {
-        return new SessionDataImpl();
+    NewsSessionData provideSessionData() {
+        return new NewsSessionDataImpl();
     }
+
 }

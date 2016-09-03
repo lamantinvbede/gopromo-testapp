@@ -19,6 +19,7 @@ public class PaginationUtils {
     private static final int EMPTY_LIST_ITEMS_COUNT = 0;
     private static final int DEFAULT_LIMIT = 50;
     private static final int MAX_ATTEMPTS_TO_RETRY_LOADING = 3;
+    private static final String TAG = "PagingUtils";
 
     public static <T> Observable<List<T>> paging(RecyclerView recyclerView, PaginationListener<T> pagingListener) {
         return paging(recyclerView, pagingListener, DEFAULT_LIMIT, EMPTY_LIST_ITEMS_COUNT, MAX_ATTEMPTS_TO_RETRY_LOADING);
@@ -65,6 +66,7 @@ public class PaginationUtils {
                     if (!subscriber.isUnsubscribed()) {
                         int position = getLastVisibleItemPosition(recyclerView);
                         int updatePosition = recyclerView.getAdapter().getItemCount() - 1 - (limit / 2);
+                        Log.d(TAG, "position : " + position + " updatePosition " + updatePosition);
                         if (position >= updatePosition) {
                             subscriber.onNext(recyclerView.getAdapter().getItemCount());
                         }

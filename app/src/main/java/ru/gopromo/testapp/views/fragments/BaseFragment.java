@@ -4,11 +4,11 @@ package ru.gopromo.testapp.views.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import ru.gopromo.testapp.presenters.BasePresenter;
+import ru.gopromo.testapp.presenters.Presenter;
 
 public abstract class BaseFragment extends Fragment {
 
-    protected abstract BasePresenter getPresenter();
+    protected abstract Presenter getPresenter();
 
     @Override
     public void onStop() {

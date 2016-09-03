@@ -1,41 +1,27 @@
 package ru.gopromo.testapp.presenters;
 
-import android.os.Bundle;
+import java.util.List;
 
 import ru.gopromo.testapp.models.NewsItem;
-import ru.gopromo.testapp.views.NewsDetailView;
+import ru.gopromo.testapp.other.utils.PaginationListener;
+import rx.Observable;
 
-public class NewsDetailsPresenter extends BasePresenter {
+public class NewsDetailsPresenter extends BaseNewsPresenter {
 
-    private NewsItem newsItem;
-    private NewsDetailView newsDetailView;
-
-    @Override
-    public void onStop() {
+    public void setNewsChunk(List<NewsItem> newsChunk) {
+        this.newsItems = newsChunk;
     }
 
     @Override
-    public void onDestroyView() {
+    protected int getLimit() {
+        return 1;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        //TODO
-    }
-
-    public void onCreateView(Bundle savedInstanceState) {
-        newsDetailView.setImage(newsItem.getImageLink());
-        newsDetailView.setTitle(newsItem.getTitle());
-        newsDetailView.setDescription(newsItem.getDescription());
-        newsDetailView.setCategory(newsItem.getCategoryTitle());
-        newsDetailView.setDate(newsItem.getPublicationDate());
-    }
-
-    public void setView(NewsDetailView newsDetailView) {
-        this.newsDetailView = newsDetailView;
-    }
-
-    public void setModel(NewsItem newsItem) {
-        this.newsItem = newsItem;
+    protected PaginationListener<NewsItem> getPagingListener() {
+        return offset -> {
+            currentOffset = offset;
+            return Observable.just(newsItems);
+        };
     }
 }

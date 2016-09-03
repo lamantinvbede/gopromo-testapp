@@ -5,6 +5,6 @@ import java.util.List;
 
 import rx.Observable;
 
-public interface SessionData {
+public interface NewsSessionData {
     Observable<List<NewsItem>> getNews();
 }

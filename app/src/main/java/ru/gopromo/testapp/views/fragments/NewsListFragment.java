@@ -21,14 +21,13 @@ import butterknife.Unbinder;
 import ru.gopromo.testapp.App;
 import ru.gopromo.testapp.R;
 import ru.gopromo.testapp.models.NewsItem;
-import ru.gopromo.testapp.models.SessionData;
 import ru.gopromo.testapp.other.utils.NavigationController;
-import ru.gopromo.testapp.presenters.BasePresenter;
 import ru.gopromo.testapp.presenters.NewsListPresenter;
-import ru.gopromo.testapp.views.NewsListView;
+import ru.gopromo.testapp.presenters.Presenter;
+import ru.gopromo.testapp.views.NewsView;
 import ru.gopromo.testapp.views.adapters.NewsListAdapter;
 
-public class NewsListFragment extends BaseFragment implements NewsListView {
+public class NewsListFragment extends BaseFragment implements NewsView {
 
     @Inject
     NewsListPresenter presenter;
@@ -44,14 +43,10 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     NewsListAdapter newsAdapter;
     private Unbinder unbinder;
 
-    @Inject
-    SessionData sessionData;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.getComponent().inject(this);
-        presenter.setModel(sessionData);
     }
 
     @Nullable
@@ -74,7 +69,7 @@ public class NewsListFragment extends BaseFragment implements NewsListView {
     }
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected Presenter getPresenter() {
         return presenter;
     }
 

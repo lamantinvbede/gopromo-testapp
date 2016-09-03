@@ -10,12 +10,12 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class SessionDataImpl implements SessionData {
+public class NewsSessionDataImpl implements NewsSessionData {
 
     @Inject
     Api api;
 
-    public SessionDataImpl() {
+    public NewsSessionDataImpl() {
         App.getComponent().inject(this);
     }
 

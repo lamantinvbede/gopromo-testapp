@@ -17,23 +17,17 @@ import ru.gopromo.testapp.R;
 import ru.gopromo.testapp.models.NewsItem;
 import ru.gopromo.testapp.presenters.NewsListPresenter;
 
-public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
+public class NewsDetailsAdapter extends RecyclerView.Adapter<NewsDetailsAdapter.ViewHolder> {
 
     private List<NewsItem> values = new ArrayList<>();
-
-    NewsListPresenter presenter;
-
-    public NewsListAdapter(NewsListPresenter presenter) {
-        this.presenter = presenter;
-    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final TextView title;
         public final TextView date;
         public final TextView category;
+        public final TextView description;
         public final ImageView newsPhoto;
-        public final View newsCard;
 
         public ViewHolder(View v) {
             super(v);
@@ -41,7 +35,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
             newsPhoto = (ImageView) v.findViewById(R.id.news_photo);
             category = (TextView) v.findViewById(R.id.news_category);
             date = (TextView) v.findViewById(R.id.news_date);
-            newsCard = v.findViewById(R.id.news_card);
+            description = (TextView) v.findViewById(R.id.news_description);
         }
     }
 
@@ -57,24 +51,22 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
     }
 
     @Override
-    public NewsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public NewsDetailsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                         int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.news_list_item, parent, false);
+                .inflate(R.layout.news_details_list_item, parent, false);
 
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        NewsItem newsItem = values.get(position);
+        final NewsItem newsItem = values.get(position);
         setTitle(holder, newsItem);
         setPhoto(holder, newsItem);
         setCategory(holder, newsItem);
         setDate(holder, newsItem);
-        holder.newsCard.setOnClickListener(view -> {
-            presenter.onNewsItemClick(position);
-        });
+        setDescription(holder, newsItem);
     }
 
     private void setDate(ViewHolder holder, NewsItem newsItem) {
@@ -87,6 +79,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
 
     private void setTitle(ViewHolder holder, NewsItem newsItem) {
         holder.title.setText(newsItem.getTitle());
+    }
+
+    private void setDescription(ViewHolder holder, NewsItem newsItem) {
+        holder.description.setText(newsItem.getDescription());
     }
 
     private void setPhoto(ViewHolder holder, NewsItem newsItem) {
